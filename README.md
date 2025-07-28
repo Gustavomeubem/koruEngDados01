@@ -111,6 +111,18 @@ Mercados-chave: EUA, França e Espanha são os principais países
 Sazonalidade: Q4 apresenta maior volume de vendas
 
 Status: 85% dos pedidos estão como "Shipped"
+Certifique-se de ter as dependências instaladas:
+
+bash
+pip install pandas numpy matplotlib
+Crie a pasta para as imagens:
+
+bash
+mkdir images
+Execute o script de visualização:
+
+bash
+python scripts/visualization.py
 
 🤝 Como Contribuir
 Contribuições são bem-vindas! Siga estes passos:
