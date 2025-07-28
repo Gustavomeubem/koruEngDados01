@@ -1,0 +1,122 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from matplotlib.ticker import FuncFormatter
+
+# Configuração do estilo dos gráficos
+plt.style.use('seaborn')
+plt.rcParams['figure.figsize'] = (12, 6)
+
+def format_currency(x, pos):
+    """Função para formatar valores em dólares"""
+    return f'${x:,.0f}'
+
+currency_formatter = FuncFormatter(format_currency)
+
+def plot_sales_trends(df):
+    """Gráfico de tendência de vendas ao longo do tempo"""
+    df['ORDERDATE'] = pd.to_datetime(df['ORDERDATE'])
+    monthly_sales = df.resample('M', on='ORDERDATE')['SALES'].sum()
+    
+    fig, ax = plt.subplots()
+    ax.plot(monthly_sales.index, monthly_sales.values, marker='o', linewidth=2)
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%b %Y'))
+    ax.yaxis.set_major_formatter(currency_formatter)
+    plt.title('Tendência de Vendas Mensais', pad=20, fontsize=14)
+    plt.xlabel('Mês/Ano')
+    plt.ylabel('Vendas ($)')
+    plt.xticks(rotation=45)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('images/sales_trend.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_top_products(df):
+    """Gráfico de barras dos produtos mais vendidos"""
+    product_sales = df.groupby('PRODUCTLINE')['QUANTITYORDERED'].sum().sort_values()
+    
+    fig, ax = plt.subplots()
+    product_sales.plot(kind='barh', ax=ax, color='teal')
+    ax.set_title('Top Linhas de Produtos por Quantidade Vendida', pad=20, fontsize=14)
+    ax.set_xlabel('Quantidade Vendida')
+    ax.set_ylabel('Linha de Produto')
+    plt.tight_layout()
+    plt.savefig('images/top_products.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_geographic_distribution(df):
+    """Gráfico de distribuição geográfica das vendas"""
+    country_sales = df.groupby('COUNTRY')['SALES'].sum().nlargest(10)
+    
+    fig, ax = plt.subplots()
+    colors = plt.cm.tab20(np.linspace(0, 1, len(country_sales)))
+    ax.pie(country_sales, labels=country_sales.index, autopct='%1.1f%%',
+           startangle=90, colors=colors, wedgeprops={'linewidth': 1, 'edgecolor': 'white'})
+    ax.set_title('Distribuição Geográfica das Vendas (Top 10 Países)', pad=20, fontsize=14)
+    plt.tight_layout()
+    plt.savefig('images/geo_distribution.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_quarterly_sales(df):
+    """Gráfico de vendas por trimestre"""
+    quarterly_sales = df.groupby('QTR_ID')['SALES'].sum()
+    
+    fig, ax = plt.subplots()
+    quarterly_sales.plot(kind='bar', ax=ax, color=['#4C72B0', '#DD8452', '#55A868', '#C44E52'])
+    ax.set_title('Vendas por Trimestre', pad=20, fontsize=14)
+    ax.set_xlabel('Trimestre')
+    ax.set_ylabel('Vendas ($)')
+    ax.yaxis.set_major_formatter(currency_formatter)
+    ax.set_xticklabels(['Q1', 'Q2', 'Q3', 'Q4'], rotation=0)
+    plt.grid(True, axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('images/quarterly_sales.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_dealsize_distribution(df):
+    """Gráfico de distribuição por tamanho de negócio"""
+    dealsize_counts = df['DEALSIZE'].value_counts()
+    
+    fig, ax = plt.subplots()
+    dealsize_counts.plot(kind='pie', autopct='%1.1f%%', startangle=90,
+                        colors=['#2ca02c', '#1f77b4', '#ff7f0e'],
+                        wedgeprops={'linewidth': 1, 'edgecolor': 'white'})
+    ax.set_title('Distribuição por Tamanho de Negócio', pad=20, fontsize=14)
+    ax.set_ylabel('')
+    plt.tight_layout()
+    plt.savefig('images/dealsize_distribution.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def plot_status_distribution(df):
+    """Gráfico de status dos pedidos"""
+    status_counts = df['STATUS'].value_counts()
+    
+    fig, ax = plt.subplots()
+    status_counts.plot(kind='bar', color='#9467bd')
+    ax.set_title('Distribuição de Status dos Pedidos', pad=20, fontsize=14)
+    ax.set_xlabel('Status')
+    ax.set_ylabel('Quantidade de Pedidos')
+    plt.xticks(rotation=45)
+    plt.grid(True, axis='y', alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('images/status_distribution.png', dpi=300, bbox_inches='tight')
+    plt.close()
+
+def main():
+    # Carregar dados
+    df = pd.read_csv('data/sales_data_sample.csv', encoding='latin1')
+    
+    # Criar gráficos
+    plot_sales_trends(df)
+    plot_top_products(df)
+    plot_geographic_distribution(df)
+    plot_quarterly_sales(df)
+    plot_dealsize_distribution(df)
+    plot_status_distribution(df)
+    
+    print("Gráficos gerados com sucesso na pasta 'images'!")
+
+if __name__ == "__main__":
+    main()
