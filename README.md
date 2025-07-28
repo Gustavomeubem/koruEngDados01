@@ -1,3 +1,55 @@
+Análise de Dados de Vendas - Documentação
+Visão Geral
+Este projeto realiza uma análise exploratória de dados de vendas de uma empresa, contendo informações sobre pedidos, produtos, clientes e desempenho de vendas.
+
+Estrutura do Dataset
+O dataset contém as seguintes colunas principais:
+
+Informações do Pedido: ORDERNUMBER, ORDERDATE, STATUS, QTR_ID, MONTH_ID, YEAR_ID
+
+Detalhes do Produto: PRODUCTLINE, PRODUCTCODE, MSRP
+
+Quantidades e Valores: QUANTITYORDERED, PRICEEACH, SALES
+
+Informações do Cliente: CUSTOMERNAME, COUNTRY, TERRITORY
+
+Tamanho do Negócio: DEALSIZE
+
+Principais Insights Iniciais
+Produtos mais vendidos: As linhas de produtos mais populares são Classic Cars e Motorcycles.
+
+Distribuição geográfica: Estados Unidos, França e Espanha são os principais mercados.
+
+Status dos pedidos: A maioria dos pedidos está com status "Shipped".
+
+Sazonalidade: Há variação nas vendas por trimestre, com picos no Q4.
+
+Como Usar
+Clone o repositório
+
+Instale as dependências: pip install pandas
+
+Execute o script de análise: python sales_analysis.py
+
+Próximos Passos
+Análise mais detalhada de sazonalidade
+
+Segmentação de clientes
+
+Análise de lucratividade por produto
+
+Desenvolvimento de dashboard interativo
+
+Requisitos
+Python 3.6+
+
+Pandas
+
+Contribuição
+Contribuições são bem-vindas! Por favor, abra uma issue ou submeta um pull request.
+
+
+
 📊 Análise de Dados de Vendas - Projeto de Engenharia de Dados
 https://img.shields.io/badge/Python-3.8%252B-blue
 https://img.shields.io/badge/Pandas-1.3.0%252B-orange
